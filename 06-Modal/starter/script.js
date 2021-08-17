@@ -31,3 +31,23 @@ const closeModal = function () {
 // Both click the close button and the outside range will make the modal close
 btnCloseModal.addEventListener('click', closeModal);
 overlay.addEventListener('click', closeModal);
+
+/**
+ * Keyboard(global) events
+ */
+// Listens events that happen everywhere
+// Keyboard events three types:
+// 1. keydown : as soon as we just press down the key
+// 2. keyup : only happens when we lift or finger off the keyboard
+// 3. keypress : when we continously keep our finger on a certain key
+document.addEventListener('keydown', function (event) {
+  //the event object will contain all the information of the specific event
+
+  console.log(event.key, typeof event.key);
+  if (event.key === 'Escape') {
+    // only want to close the modal when the modal is visiable
+    if (!modal.classList.contains('hidden')) {
+      closeModal();
+    }
+  }
+});
