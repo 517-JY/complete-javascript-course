@@ -75,6 +75,31 @@ const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 /////////////////////////////////////////////////
 
+const displayMovements = function (movements) {
+  // innerHTML is simliar to textContent
+  // console.log(containerMovements.innerHTML);
+  containerMovements.innerHTML = '';
+  movements.forEach((movement, i) => {
+    const type = movement > 0 ? 'deposit' : 'withdrawal';
+    // 1. define the html template literal
+    const html = `
+    <div class="movements__row">
+      <div class="movements__type movements__type--${type}">${
+      i + 1
+    } ${type}</div>
+      <div class="movements__value">${movement}</div>
+    </div>
+  `;
+
+    // 2. add this html onto the web page
+    //    use a method called insertAdjacentHTML, 'afterbegin' here indicates where the new movement should be put
+    containerMovements.insertAdjacentHTML('afterbegin', html);
+    //console.log(containerMovements.innerHTML);
+  });
+};
+
+displayMovements(account1.movements);
+
 // /**
 //  * forEach with Map and Sets
 //  */
@@ -166,3 +191,31 @@ const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 // // JOIN
 // console.log(letters.join(' - '));
+
+// /**
+//  * Code Challenge -- check dogs
+//  */
+
+// const checkDogs = function (dogsJulia, dogsKate) {
+//   const dogsJuliaCorrected = dogsJulia.slice();
+//   // delete the first data
+//   dogsJuliaCorrected.splice(0, 1);
+//   // delete the last two data
+//   dogsJuliaCorrected.splice(-2);
+//   console.log(dogsJuliaCorrected);
+
+//   const dogs = dogsJuliaCorrected.concat(dogsKate);
+//   console.log(dogs);
+
+//   // For each remaining dog, log to the console whether it's an adult ("Dog number 1 is an adult, and is 5 years old") or a puppy ("Dog number 2 is still a puppy 🐶")
+//   dogs.forEach((dog, i) => {
+//     let dogStr =
+//       dog >= 3
+//         ? `Dog number ${i + 1} is an adult, and is ${dog} years old`
+//         : `Dog number ${i + 1} is still a puppy 🐶`;
+//     console.log(dogStr);
+//   });
+// };
+
+// checkDogs([3, 5, 2, 12, 7], [4, 1, 15, 8, 3]);
+// checkDogs([9, 16, 6, 8, 3], [10, 5, 6, 1, 4]);
