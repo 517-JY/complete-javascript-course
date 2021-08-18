@@ -74,3 +74,95 @@ const currencies = new Map([
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 /////////////////////////////////////////////////
+
+// /**
+//  * forEach with Map and Sets
+//  */
+// currencies.forEach((value, key, map) => {
+//   console.log(`${key} : ${value}`);
+// });
+
+// // Set
+// const currenciesUnique = new Set(['USD', 'GBP', 'CNY', 'USD', 'EUR', 'EUR']);
+// console.log(currenciesUnique);
+
+// currenciesUnique.forEach((value, key, set) => {
+//   // Key is exact same as value
+//   console.log(`${key} : ${value}`);
+// });
+
+// /**
+//  * Looping Arrays:forEach (cannot use  break and continue)
+//  */
+
+// for (const movement of movements) {
+//   let str =
+//     movement > 0
+//       ? `You deposited ${movement}`
+//       : `You withdrew ${Math.abs(movement)}`;
+//   console.log(str);
+// }
+
+// console.log('--------------');
+
+// movements.forEach(movement => {
+//   let str =
+//     movement > 0
+//       ? `You deposited ${movement}`
+//       : `You withdrew ${Math.abs(movement)}`;
+//   console.log(str);
+// });
+
+// console.log('--------------');
+// movements.forEach((movement, i, arr) => {
+//   let str =
+//     movement > 0
+//       ? `Movement ${i} : You deposited ${movement}`
+//       : `Movement ${i} : You withdrew ${Math.abs(movement)}`;
+//   console.log(str);
+//   // console.log(arr);
+// });
+
+/**
+ * Array Methods
+ */
+
+// slice method does not change the original array
+// let arr = ['a', 'b', 'c', 'd', 'e'];
+// console.log(arr.slice(2));
+// console.log(arr);
+// console.log(arr.slice(2, 4));
+// console.log(arr);
+
+// // get the last few elements
+// console.log(arr.slice(-2));
+// console.log(arr.slice(-1));
+// // get the array starts from 1 and excepts the last two elements
+// console.log(arr.slice(1, -2));
+// // creates a shallow array
+// console.log(arr.slice());
+
+// // SPLICE method -- will mutuate the original array
+// console.log(arr.splice(2));
+// console.log(arr);
+// arr = ['a', 'b', 'c', 'd', 'e'];
+// console.log(arr);
+// console.log(arr.splice(-1));
+// console.log(arr);
+// // starts from position 1 and delete 2 elements
+// console.log(arr.splice(1, 2));
+// console.log(arr);
+
+// // REVERSE method
+// const arr2 = ['j', 'i', 'h', 'g', 'f'];
+// // console.log(arr2);
+// // console.log(arr2.reverse());
+// // console.log(arr2);
+
+// // // CONCAT
+// const letters = arr.concat(arr2);
+// console.log(letters);
+// console.log(arr);
+
+// // JOIN
+// console.log(letters.join(' - '));
