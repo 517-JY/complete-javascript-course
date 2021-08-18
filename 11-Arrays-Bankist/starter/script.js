@@ -100,6 +100,26 @@ const displayMovements = function (movements) {
 
 displayMovements(account1.movements);
 
+/**
+ * Create a function that generate users initials
+ * @param {*} accounts all the user accounts
+ */
+const createUsernames = function (accounts) {
+  accounts.forEach(account => {
+    // create a new property on the account element
+    // split method returns an array
+    account.username = account.owner
+      .toLowerCase()
+      .split(' ')
+      .map(name => {
+        return name[0];
+      })
+      .join('');
+  });
+};
+createUsernames(accounts);
+console.log(accounts);
+
 // /**
 //  * forEach with Map and Sets
 //  */
@@ -219,3 +239,45 @@ displayMovements(account1.movements);
 
 // checkDogs([3, 5, 2, 12, 7], [4, 1, 15, 8, 3]);
 // checkDogs([9, 16, 6, 8, 3], [10, 5, 6, 1, 4]);
+
+// /**
+//  * The Map method :
+//  * map is actually similar to the forEach method that we studied before
+//  * but with the difference that map creates a brand new array ased on the original array.
+//  * map returns a new array containing the results of applying an operation on all original array elements
+//  *
+//  */
+
+// const eurToUsd = 1.1;
+// const movementsUSD = movements.map(movement => {
+//   return movement * eurToUsd;
+// });
+
+// console.log(movements);
+// console.log(movementsUSD);
+
+// const movementsUSDfor = [];
+// for (const mov of movements) {
+//   movementsUSDfor.push(mov * eurToUsd);
+// }
+// console.log(movementsUSDfor);
+
+// const movementsDescriptions = movements.map((movement, i) => {
+//   return `Movement ${i + 1} :
+//   You ${movement > 0 ? 'deposited' : 'withdrew'} ${Math.abs(movement)}`;
+// });
+
+// console.log(movementsDescriptions);
+
+/**
+ * The Filter Method :
+ * filter returns a new array containing the array elements that passed a
+ * specified test condition
+ */
+// TODO : filter practices
+
+/**
+ * The Reduce Method:
+ * reduce all array elements down to one single value
+ */
+// TODO : reduce practices
