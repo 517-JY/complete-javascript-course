@@ -124,10 +124,11 @@ createUsernames(accounts);
  * Creates calcDisplayBalance method for specific account
  * @param {} movements
  */
-const calcDisplayBalance = function (movements) {
-  const balance = movements.reduce((acc, mov) => {
+const calcDisplayBalance = function (account) {
+  const balance = account.movements.reduce((acc, mov) => {
     return acc + mov;
   }, 0);
+  account.balance = balance; // adds a new property to account
   // console.log(balance);
   labelBalance.textContent = `${balance} EUR`;
 };
@@ -159,6 +160,17 @@ const calcDisplaySummary = function (account) {
   labelSumInterest.textContent = `${interest}€`;
 };
 // calcDisplaySummary(account1.movements);
+
+const updateUI = function (currAccount) {
+  // Display movements
+  displayMovements(currAccount.movements);
+
+  // Display balance
+  calcDisplayBalance(currAccount);
+
+  // Display summary
+  calcDisplaySummary(currAccount);
+};
 
 /**
  * User login
@@ -193,18 +205,70 @@ btnLogin.addEventListener('click', function (event) {
     inputLoginPin.value = '';
     inputLoginPin.blur(); // make it lose it focus
 
-    // Display movements
-    displayMovements(currentAccount.movements);
-
-    // Display balance
-    calcDisplayBalance(currentAccount.movements);
-
-    // Display summary
-    calcDisplaySummary(currentAccount);
+    updateUI(currentAccount);
   } else {
     containerApp.style.opacity = 0;
   }
 });
+
+/**
+ * Money Transfer
+ */
+btnTransfer.addEventListener('click', function (event) {
+  event.preventDefault();
+  const amount = Number(inputTransferAmount.value);
+  const receiveAcc = accounts.find(
+    account => account.username === inputTransferTo.value
+  );
+  console.log(amount, receiveAcc);
+
+  // clear the input
+  inputTransferTo.value = '';
+  inputTransferAmount.value = '';
+
+  if (
+    amount > 0 &&
+    currentAccount.balance >= amount &&
+    receiveAcc &&
+    receiveAcc.username !== currentAccount.username
+  ) {
+    // Doing transfer
+    currentAccount.movements.push(-amount);
+    receiveAcc.movements.push(amount);
+    // Update UI
+    updateUI(currentAccount);
+  }
+});
+
+/**
+ * Close Account
+ */
+btnClose.addEventListener('click', function (event) {
+  event.preventDefault();
+
+  // Check credentials
+  if (
+    currentAccount.username === inputCloseUsername.value &&
+    currentAccount.pin === Number(inputClosePin.value)
+  ) {
+    const index = accounts.findIndex(
+      account => account.username === currentAccount.username
+    );
+    console.log(index);
+
+    // find exact index and remove exact 1 element -- Delete account
+    accounts.splice(index, 1);
+
+    // Hide UI
+    containerApp.style.opacity = 0;
+    labelWelcome.textContent = 'Log in to get started';
+  }
+
+  inputCloseUsername.value = '';
+  inputClosePin.value = '';
+});
+
+/** ---------------------Array Methods------------------- */
 
 // /**
 //  * forEach with Map and Sets
@@ -465,3 +529,7 @@ btnLogin.addEventListener('click', function (event) {
 
 // const account = accounts.find(acc => acc.owner === 'Jessica Davis');
 // console.log(account);
+
+/**
+ * findIndex Method
+ */
