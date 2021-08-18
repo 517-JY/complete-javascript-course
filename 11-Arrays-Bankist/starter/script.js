@@ -118,7 +118,21 @@ const createUsernames = function (accounts) {
   });
 };
 createUsernames(accounts);
-console.log(accounts);
+// console.log(accounts);
+
+/**
+ * Creates calcDisplayBalance method for specific account
+ * @param {} movements
+ */
+const calcDisplayBalance = function (movements) {
+  const balance = movements.reduce((acc, mov) => {
+    return acc + mov;
+  }, 0);
+  console.log(balance);
+  labelBalance.textContent = `${balance} EUR`;
+};
+
+calcDisplayBalance(account1.movements);
 
 // /**
 //  * forEach with Map and Sets
@@ -269,15 +283,82 @@ console.log(accounts);
 
 // console.log(movementsDescriptions);
 
-/**
- * The Filter Method :
- * filter returns a new array containing the array elements that passed a
- * specified test condition
- */
-// TODO : filter practices
+// /**
+//  * The Filter Method :
+//  * filter returns a new array containing the array elements that passed a
+//  * specified test condition
+//  */
+// const deposits = movements.filter(movement => {
+//   return movement > 0;
+// });
+// console.log(movements);
+// console.log(deposits);
 
-/**
- * The Reduce Method:
- * reduce all array elements down to one single value
- */
-// TODO : reduce practices
+// const depositsFor = [];
+// for (const mov of movements) {
+//   if (mov > 0) {
+//     depositsFor.push(mov);
+//   }
+// }
+// console.log(depositsFor);
+
+// const withdrawals = movements.filter(movement => {
+//   return movement < 0;
+// });
+// console.log(movements);
+// console.log(withdrawals);
+
+// /**
+//  * The Reduce Method:
+//  * reduce all array elements down to one single value
+//  */
+
+// console.log(movements);
+// // reduce to a single value
+// const balance = movements.reduce(function (accumulate, cur, i, arr) {
+//   // console.log(`Iteration ${i + 1} : ${cur}  ${accumulate}`);
+//   return accumulate + cur;
+// }, 0); // the second parameter is the initial value for accumulate
+// console.log(balance);
+
+// let balance2 = 0;
+// for (const mov of movements) {
+//   balance2 += mov;
+// }
+// console.log(balance2);
+
+// const maxMov = movements.reduce((acc, mov) => {
+//   return acc > mov ? acc : mov;
+// }, movements[0]);
+
+// console.log(maxMov);
+
+// /**
+//  * Code Challenge
+//  */
+
+// const calcAverageHumanAge = function (dogAges) {
+//   const humanAges = dogAges.map(dogAge => {
+//     return dogAge <= 2 ? dogAge * 2 : 16 + dogAge * 4;
+//   });
+//   console.log(dogAges);
+//   console.log(humanAges);
+
+//   const adults = humanAges.filter(humanAge => {
+//     return humanAge >= 18;
+//   });
+//   console.log(adults);
+
+//   const average =
+//     adults.reduce((acc, curr) => {
+//       return acc + curr;
+//     }, 0) / adults.length;
+//   // console.log(average);
+
+//   return average;
+// };
+
+// console.log(
+//   calcAverageHumanAge([5, 2, 4, 1, 15, 8, 3]),
+//   calcAverageHumanAge([16, 6, 10, 5, 6, 1, 4])
+// );
