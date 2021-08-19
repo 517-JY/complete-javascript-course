@@ -16,6 +16,8 @@ const allSections = document.querySelectorAll('.section');
 
 const h1 = document.querySelector('h1');
 
+const nav = document.querySelector('.nav');
+
 const openModal = function (event) {
   event.preventDefault();
   modal.classList.remove('hidden');
@@ -176,9 +178,9 @@ document
 const tabs = document.querySelectorAll('.operations__tab');
 // console.log(tabs);
 const tabsContainer = document.querySelector('.operations__tab-container');
-console.log(tabsContainer);
+// console.log(tabsContainer);
 const tabsContent = document.querySelectorAll('.operations__content');
-console.log(tabsContent);
+// console.log(tabsContent);
 
 // // Not desirable, needs event delegation here
 // tabs.forEach(t =>
@@ -190,7 +192,7 @@ console.log(tabsContent);
 tabsContainer.addEventListener('click', function (event) {
   // Needs to get the tab no matter click span or button
   const clicked = event.target.closest('.operations__tab');
-  console.log(clicked);
+  // console.log(clicked);
 
   // if the user click inside the container but not any tabs
   // Guard clause
@@ -207,6 +209,56 @@ tabsContainer.addEventListener('click', function (event) {
   document
     .querySelector(`.operations__content--${clicked.dataset.tab}`)
     .classList.add('operations__content--active');
+});
+
+/**
+ * Menu fade animation
+ */
+// Events bubble up from the target
+
+const handleHover = function (event, opacity) {
+  if (event.target.classList.contains('nav__link')) {
+    const link = event.target;
+    const siblings = link.closest('.nav').querySelectorAll('.nav__link');
+    const logo = link.closest('.nav').querySelector('img');
+
+    siblings.forEach(element => {
+      if (element !== link) {
+        element.style.opacity = opacity;
+      }
+      logo.style.opacity = opacity;
+    });
+  }
+};
+
+// HACK - Recap
+// // Below is Wrong (because eventlistner expects a function, not a value)
+// nav.addEventListener('mouseover', handleHover(event, 0.5));
+// // 'mouseout' is opposite of 'mouseover'
+// nav.addEventListener('mouseout', handleHover(event, 1));
+
+// Correct Way
+nav.addEventListener('mouseover', function (event) {
+  handleHover(event, 0.5);
+});
+// 'mouseout' is opposite of 'mouseover'
+nav.addEventListener('mouseout', function (event) {
+  handleHover(event, 1);
+});
+
+/**
+ * Sticky Navigation
+ */
+const initialCoords = section1.getBoundingClientRect();
+// console.log(initialCoords);
+window.addEventListener('scroll', function (event) {
+  // console.log(window.scrollY);
+  // add sticky class once reaches section--1
+  if (window.scrollY > initialCoords.top) {
+    nav.classList.add('sticky');
+  } else {
+    nav.classList.remove('sticky');
+  }
 });
 
 //////////////////////////////////////////////////////
