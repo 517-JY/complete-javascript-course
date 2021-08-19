@@ -14,6 +14,8 @@ const section1 = document.querySelector('#section--1');
 const header = document.querySelector('.header');
 const allSections = document.querySelectorAll('.section');
 
+const h1 = document.querySelector('h1');
+
 const openModal = function (event) {
   event.preventDefault();
   modal.classList.remove('hidden');
@@ -148,6 +150,7 @@ btnScrollTo.addEventListener('click', function (event) {
 // Better Solution : event delegation -- find the common parent element
 // of all the elements that we are interested in
 
+// HACK - Recap
 // 1. Add event listener to common parent element
 // 2. Determine what element originated the event
 document
@@ -165,6 +168,46 @@ document
       document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
     }
   });
+
+/**
+ * Building Tabbed Component
+ */
+// HACK - Recap
+const tabs = document.querySelectorAll('.operations__tab');
+// console.log(tabs);
+const tabsContainer = document.querySelector('.operations__tab-container');
+console.log(tabsContainer);
+const tabsContent = document.querySelectorAll('.operations__content');
+console.log(tabsContent);
+
+// // Not desirable, needs event delegation here
+// tabs.forEach(t =>
+//   t.addEventListener('click', function (event) {
+//     console.log('TAB');
+//   })
+// );
+
+tabsContainer.addEventListener('click', function (event) {
+  // Needs to get the tab no matter click span or button
+  const clicked = event.target.closest('.operations__tab');
+  console.log(clicked);
+
+  // if the user click inside the container but not any tabs
+  // Guard clause
+  if (!clicked) return;
+
+  // Active tab
+  tabs.forEach(t => t.classList.remove('operations__tab--active'));
+  clicked.classList.add('operations__tab--active');
+
+  // Active content area
+  tabsContent.forEach(operContent =>
+    operContent.classList.remove('operations__content--active')
+  );
+  document
+    .querySelector(`.operations__content--${clicked.dataset.tab}`)
+    .classList.add('operations__content--active');
+});
 
 //////////////////////////////////////////////////////
 
@@ -238,7 +281,7 @@ document
 //   //this.removeEventListener('mouseenter', alertH1);
 // };
 
-// HACK
+// HACK - Recap
 // h1.addEventListener('mouseenter', alertH1);
 // // Remove the event after 2 seconds
 // setTimeout(() => h1.removeEventListener('mouseenter', alertH1), 2000);
@@ -288,6 +331,41 @@ const randomColor = () =>
 //   console.log(e.target === this); // false
 // });
 
-/**
- * Event Delegation
- */
+// /**
+//  * DOM Traverse
+//  */
+
+// // console.log(h1);
+// // Going downwards : child
+// console.log(h1.querySelectorAll('.highlight'));
+// // Get Nodelist
+// // console.log(h1.childNodes);
+// // Only get HTMLCollection, only work for direct children
+// console.log(h1.children);
+// console.log(h1.firstElementChild);
+// console.log(h1.lastElementChild);
+
+h1.firstElementChild.style.color = 'white';
+h1.lastElementChild.style.color = 'white';
+
+// // Going upwards:parents
+// console.log(h1.parentNode);
+// console.log(h1.parentElement);
+
+// Choose closest element that has the header class
+// h1.closest('.header').style.background = 'var(--gradient-primary)';
+
+// // Going sideways: siblings
+// console.log(h1.previousElementSibling);
+// console.log(h1.nextElementSibling);
+
+// console.log(h1.previousSibling);
+// console.log(h1.nextSibling);
+
+// // Get all the siblings
+// console.log(h1.parentElement.children);
+// [...h1.parentElement.children].forEach(function (el) {
+//   if (el !== h1) {
+//     el.style.transform = 'scale(0.8)';
+//   }
+// });
