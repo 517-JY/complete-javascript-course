@@ -8,6 +8,12 @@ const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
 
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+const section1 = document.querySelector('#section--1');
+
+const header = document.querySelector('.header');
+const allSections = document.querySelectorAll('.section');
+
 const openModal = function (event) {
   event.preventDefault();
   modal.classList.remove('hidden');
@@ -43,8 +49,6 @@ document.addEventListener('keydown', function (e) {
 // console.log(document.head);
 // console.log(document.body);
 
-const header = document.querySelector('.header');
-const allSections = document.querySelectorAll('.section');
 // console.log(allSections);
 
 document.getElementById('section--1');
@@ -81,9 +85,7 @@ const allButtons = document.getElementsByTagName('button');
  * Smooth Scrolling
  */
 
-const btnScrollTo = document.querySelector('.btn--scroll-to');
-const section1 = document.querySelector('#section--1');
-
+// // HACK - Recap
 btnScrollTo.addEventListener('click', function (event) {
   const s1coords = section1.getBoundingClientRect();
 
@@ -126,6 +128,46 @@ btnScrollTo.addEventListener('click', function (event) {
 
 // console.log(btnScrollTo);
 // console.log(section1);
+
+/**
+ * Page Navigation(Smooth)
+ */
+
+// // Cons of this below apparoach is inefficient :
+// // same event handler is added to three elements
+// // There could be cases where there are more than 100000 elements
+// document.querySelectorAll('.nav__link').forEach(function (element) {
+//   element.addEventListener('click', function (event) {
+//     event.preventDefault();
+//     const id = this.getAttribute('href');
+//     console.log(id);
+//     document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+//   });
+// });
+
+// Better Solution : event delegation -- find the common parent element
+// of all the elements that we are interested in
+
+// 1. Add event listener to common parent element
+// 2. Determine what element originated the event
+document
+  .querySelector('.nav__links')
+  .addEventListener('click', function (event) {
+    // console.log(event.target);
+    // console.log(event.currentTarget);
+    event.preventDefault();
+
+    // Matching strategy
+    if (event.target.classList.contains('nav__link')) {
+      // console.log(this);
+      const id = event.target.getAttribute('href');
+      console.log(id);
+      document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+
+//////////////////////////////////////////////////////
+
 // /**
 //  * Style  / Attributes  / Classes
 //  */
@@ -139,7 +181,7 @@ btnScrollTo.addEventListener('click', function (event) {
 // console.log(getComputedStyle(message).color);
 // console.log(getComputedStyle(message).height);
 
-// // FIXME: useful example
+// // HACK - Recap
 // message.style.height =
 //   Number.parseFloat(getComputedStyle(message).height, 10) + 10 + 'px';
 // console.log(getComputedStyle(message).height);
@@ -178,3 +220,74 @@ btnScrollTo.addEventListener('click', function (event) {
 // logo.classList.toggle('c');
 // logo.classList.toggle('c');
 // console.log(logo.classList.contains('c'));
+
+// /**
+//  * Type of events and event handler
+//  */
+// const h1 = document.querySelector('h1');
+// console.log(h1);
+
+// // h1.onmouseenter = function (event) {
+// //   alert('addEventListner:Great! reading headline again');
+// // };
+
+// // Remove enventHandler
+// // Only want to listen to the event once
+// const alertH1 = function (event) {
+//   alert('addEventListner:Great! reading headline');
+//   //this.removeEventListener('mouseenter', alertH1);
+// };
+
+// HACK
+// h1.addEventListener('mouseenter', alertH1);
+// // Remove the event after 2 seconds
+// setTimeout(() => h1.removeEventListener('mouseenter', alertH1), 2000);
+
+// /**
+//  * Event Propagation in Practice
+//  */
+
+// // rgb(255,255,255)
+
+const randomInt = (min, max) =>
+  Math.floor(Math.random() * (max - min + 1) + min);
+
+const randomColor = () =>
+  `rgb(${randomInt(0, 255)}, ${randomInt(0, 255)},${randomInt(0, 255)})`;
+// console.log(randomColor());
+
+// document.querySelector('.nav__link').addEventListener('click', function (e) {
+//   // in an event handler that this keyword, points always to the element
+//   // on which that event handler is attached.
+//   this.style.backgroundColor = randomColor();
+//   // e.target is essentially where the event originated
+//   //          is not the element on which the handler is actually attached
+//   console.log('LINK', e.target, e.currentTarget);
+//   console.log(e.currentTarget === this); // true
+//   console.log(e.target === this); // true
+
+//   // // Stop propagation
+//   // e.stopPropagation();
+// });
+
+// // parent element of .nav_link
+// document.querySelector('.nav__links').addEventListener('click', function (e) {
+//   // console.log('LINK');
+//   this.style.backgroundColor = randomColor();
+//   console.log('LINKS', e.target, e.currentTarget);
+//   console.log(e.currentTarget === this); // true
+//   console.log(e.target === this); // false
+// });
+
+// // parent element of .nav_links
+// document.querySelector('.nav').addEventListener('click', function (e) {
+//   // console.log('LINK');
+//   this.style.backgroundColor = randomColor();
+//   console.log('NAV', e.target, e.currentTarget);
+//   console.log(e.currentTarget === this); // true
+//   console.log(e.target === this); // false
+// });
+
+/**
+ * Event Delegation
+ */
