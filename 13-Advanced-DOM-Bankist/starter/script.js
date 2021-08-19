@@ -57,75 +57,124 @@ const allButtons = document.getElementsByTagName('button');
 
 // console.log(document.getElementsByClassName('btn'));
 
-// Creating and inserting elements
-const message = document.createElement('div');
-message.classList.add('cookie-message');
-message.textContent = 'We use cokkied for improved functionality and analytics';
-message.innerHTML = `${message.textContent} <button class="btn btn--close-cookie">Got it!</button>`;
+// // Creating and inserting elements
+// const message = document.createElement('div');
+// message.classList.add('cookie-message');
+// message.textContent = 'We use cokkied for improved functionality and analytics';
+// message.innerHTML = `${message.textContent} <button class="btn btn--close-cookie">Got it!</button>`;
 
-// only one
-header.prepend(message);
-header.append(message);
-// header.append(message.cloneNode(true));
-// header.before(message);
-// header.after(message);
+// // only one
+// header.prepend(message);
+// header.append(message);
+// // header.append(message.cloneNode(true));
+// // header.before(message);
+// // header.after(message);
 
-// Delete elements
-document
-  .querySelector('.btn--close-cookie')
-  .addEventListener('click', function (event) {
-    message.remove();
-  });
+// // Delete elements
+// document
+//   .querySelector('.btn--close-cookie')
+//   .addEventListener('click', function (event) {
+//     message.remove();
+//   });
 
 /**
- * Style  / Attributes  / Classes
+ * Smooth Scrolling
  */
-message.style.backgroundColor = '#37383d';
-message.style.width = '120%';
-// console.log(message.style.height); // Can't get
-// console.log(message.style.width); // Can get
 
-// // Get all properties
-// console.log(getComputedStyle(message));
-console.log(getComputedStyle(message).color);
-console.log(getComputedStyle(message).height);
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+const section1 = document.querySelector('#section--1');
 
-// FIXME: useful example
-message.style.height =
-  Number.parseFloat(getComputedStyle(message).height, 10) + 10 + 'px';
-console.log(getComputedStyle(message).height);
+btnScrollTo.addEventListener('click', function (event) {
+  const s1coords = section1.getBoundingClientRect();
 
-// Set style
-// document.documentElement.style.setProperty('--color-primary', 'orangered');
+  console.log(s1coords);
+  console.log(event.target.getBoundingClientRect());
+  console.log('current scroll(X/Y)', window.pageXOffset, window.pageYOffset);
+  console.log(
+    'height/width viewport',
+    document.documentElement.clientHeight,
+    document.documentElement.clientWidth
+  );
 
-// Attribute
-const log = document.querySelector('.nav__logo');
-// only show standard property
-console.log(logo.alt);
-console.log(logo.src);
-console.log(logo.className);
+  // Scrolling
+  // s1coords.left annd s1coords.top are all relative to viewport not the page
 
-logo.alt = 'Beautiful minimalist logo';
+  // Wrong scroll
+  // window.scrollTo(s1coords.left, s1coords.top);
+  // console.log(`s1coords.left : ${s1coords.left}`);
+  // console.log(`s1coords.top : ${s1coords.top}`);
 
-// Non-standard
-console.log(logo.designer); // does not work
-console.log(logo.getAttribute('designer'));
-logo.setAttribute('company', 'Bankist');
+  // Correct scroll -- method1
+  window.scrollTo({
+    left: s1coords.left + window.pageXOffset,
+    top: s1coords.top + window.pageYOffset,
+    behavior: 'smooth',
+  });
 
-console.log(logo.src); // http://127.0.0.1:8080/img/logo.png
-console.log(logo.getAttribute('src')); // img/logo.png
+  // console.log(
+  //   `s1coords.left  + window.pageXOffset: ${s1coords.left + window.pageXOffset}`
+  // );
+  // console.log(
+  //   `s1coords.top + window.pageYOffset: ${s1coords.top + window.pageYOffset}`
+  // );
 
-const link = document.querySelector('.twitter-link');
-// Below two print the same results
-console.log(link.href);
-console.log(link.getAttribute('href'));
+  // // Correct scroll -- method2
+  // section1.scrollIntoView({ behavior: 'smooth' });
+});
 
-// data.set.versionNumber --- standard property
-console.log(logo.dataset.versionNumber);
+// needs to get the coordinates of the element that we want to scroll to
 
-// Classes
-log.classList.add('c', 'j');
-log.classList.remove('c', 'j');
-logo.classList.toggle('c');
-logo.classList.toggle('c');
-console.log(logo.classList.contains('c'));
+// console.log(btnScrollTo);
+// console.log(section1);
+// /**
+//  * Style  / Attributes  / Classes
+//  */
+// message.style.backgroundColor = '#37383d';
+// message.style.width = '120%';
+// // console.log(message.style.height); // Can't get
+// // console.log(message.style.width); // Can get
+
+// // // Get all properties
+// // console.log(getComputedStyle(message));
+// console.log(getComputedStyle(message).color);
+// console.log(getComputedStyle(message).height);
+
+// // FIXME: useful example
+// message.style.height =
+//   Number.parseFloat(getComputedStyle(message).height, 10) + 10 + 'px';
+// console.log(getComputedStyle(message).height);
+
+// // Set style
+// // document.documentElement.style.setProperty('--color-primary', 'orangered');
+
+// // Attribute
+// const log = document.querySelector('.nav__logo');
+// // only show standard property
+// console.log(logo.alt);
+// console.log(logo.src);
+// console.log(logo.className);
+
+// logo.alt = 'Beautiful minimalist logo';
+
+// // Non-standard
+// console.log(logo.designer); // does not work
+// console.log(logo.getAttribute('designer'));
+// logo.setAttribute('company', 'Bankist');
+
+// console.log(logo.src); // http://127.0.0.1:8080/img/logo.png
+// console.log(logo.getAttribute('src')); // img/logo.png
+
+// const link = document.querySelector('.twitter-link');
+// // Below two print the same results
+// console.log(link.href);
+// console.log(link.getAttribute('href'));
+
+// // data.set.versionNumber --- standard property
+// console.log(logo.dataset.versionNumber);
+
+// // Classes
+// log.classList.add('c', 'j');
+// log.classList.remove('c', 'j');
+// logo.classList.toggle('c');
+// logo.classList.toggle('c');
+// console.log(logo.classList.contains('c'));
