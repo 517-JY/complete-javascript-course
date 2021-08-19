@@ -354,7 +354,7 @@ btnClose.addEventListener('click', function (event) {
  */
 
 // slice method does not change the original array
-let arr = ['a', 'b', 'c', 'd', 'e'];
+// let arr = ['a', 'b', 'c', 'd', 'e'];
 // console.log(arr.slice(2));
 // console.log(arr);
 // console.log(arr.slice(2, 4));
@@ -366,7 +366,7 @@ let arr = ['a', 'b', 'c', 'd', 'e'];
 // // get the array starts from 1 and excepts the last two elements
 // console.log(arr.slice(1, -2));
 // creates a shallow array
-console.log(arr.slice());
+// console.log(arr.slice());
 
 // // SPLICE method -- will mutuate the original array
 // console.log(arr.splice(2));
@@ -641,3 +641,42 @@ console.log(arr.slice());
 //   if (b > a) return 1;
 // });
 // console.log(movements);
+
+// /**
+//  * More ways of creating and filling Array
+//  * */
+// const arr = [1, 2, 3, 4, 5, 6, 7];
+// console.log(new Array(1, 2, 3, 4, 5, 6, 7));
+
+// // Create an empty Array with 7 slots
+// const x = new Array(7);
+// console.log(x);
+// console.log(x.length);
+
+// x.fill(1, 3, 5);
+// x.fill(1);
+// console.log(x);
+
+// console.log(arr);
+// arr.fill(23, 2, 6);
+// console.log(arr);
+
+// // Array.from -- generate array-like structure to actual array
+// const y = Array.from({ length: 7 }, () => 1);
+// console.log(y);
+
+// const z = Array.from({ length: 7 }, (curr, i) => i + 1);
+// console.log(z);
+
+// const z2 = Array.from({ length: 7 }, (_, i) => i + 1);
+// console.log(z2);
+
+// // Generate movements Array from UI
+// labelBalance.addEventListener('click', function () {
+//   const movementsUI = Array.from(
+//     document.querySelectorAll('.movements__value'),
+//     el => Number(el.textContent.replace('€', ''))
+//   );
+
+//   console.log(movementsUI);
+// });
