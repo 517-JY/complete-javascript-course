@@ -246,20 +246,75 @@ nav.addEventListener('mouseout', function (event) {
   handleHover(event, 1);
 });
 
+// /**
+//  * Sticky Navigation
+//  */
+// const initialCoords = section1.getBoundingClientRect();
+// // console.log(initialCoords);
+// window.addEventListener('scroll', function (event) {
+//   // console.log(window.scrollY);
+//   // add sticky class once reaches section--1
+//   if (window.scrollY > initialCoords.top) {
+//     nav.classList.add('sticky');
+//   } else {
+//     nav.classList.remove('sticky');
+//   }
+// });
+
+// HACK - Recap
 /**
- * Sticky Navigation
+ * Sticky Navigation -- Using Intersection Observer API
  */
-const initialCoords = section1.getBoundingClientRect();
-// console.log(initialCoords);
-window.addEventListener('scroll', function (event) {
-  // console.log(window.scrollY);
-  // add sticky class once reaches section--1
-  if (window.scrollY > initialCoords.top) {
+// // entries here are an array of the threshold entries
+// const obsCallback = function (entries, observer) {
+//   entries.forEach(entry => {
+//     console.log(entry);
+//   });
+// };
+
+// const obsOptions = {
+//   // The root element will be the element
+//   // that we want our target element to intersect
+//   root: null,
+//   // threshold is the percentage of intersection
+//   // at which the observer callback will be called
+//   // In this particular example
+//   // whenever section1 is interscting the viewport(root) at 10% (threashold)
+//   // the obsCallback function will get called
+//   threshold: [0, 0.2],
+// };
+
+// const observer = new IntersectionObserver(obsCallback, obsOptions);
+// observer.observe(section1);
+
+const navHeight = nav.getBoundingClientRect().height;
+
+const stickyNav = function (entries) {
+  const [entry] = entries;
+  console.log(entry);
+
+  // when the header is not intersecting with the viewport
+  // we'd like to add the sticky class
+
+  // when the target is not intersecting the root
+  // want the sticky class applied
+  if (!entry.isIntersecting) {
     nav.classList.add('sticky');
   } else {
     nav.classList.remove('sticky');
   }
+};
+
+const headerObserver = new IntersectionObserver(stickyNav, {
+  root: null,
+  // when 0% of the header here is visible
+  threshold: 0,
+  // now the navigation appeared exactly 90 pixels
+  // before the threshold was actually reached.
+  rootMargin: `${navHeight}px`,
 });
+
+headerObserver.observe(header);
 
 //////////////////////////////////////////////////////
 
