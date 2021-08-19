@@ -75,11 +75,16 @@ const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 /////////////////////////////////////////////////
 
-const displayMovements = function (movements) {
+// the sort parameter indicates whether the movements should be sorted or not
+const displayMovements = function (movements, sort = false) {
   // innerHTML is simliar to textContent
   // console.log(containerMovements.innerHTML);
   containerMovements.innerHTML = '';
-  movements.forEach((movement, i) => {
+
+  //
+  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
+
+  movs.forEach((movement, i) => {
     const type = movement > 0 ? 'deposit' : 'withdrawal';
     // 1. define the html template literal
     const html = `
@@ -212,6 +217,32 @@ btnLogin.addEventListener('click', function (event) {
 });
 
 /**
+ * Sort Movements
+ */
+let sorted = false;
+btnSort.addEventListener('click', function (event) {
+  event.preventDefault();
+  displayMovements(currentAccount.movements, !sorted);
+  sorted = !sorted;
+});
+
+/**
+ * Loan Request
+ */
+btnLoan.addEventListener('click', function (event) {
+  event.preventDefault();
+  const amount = Number(inputLoanAmount.value);
+  if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
+    // Add movement
+    currentAccount.movements.push(amount);
+
+    // updateUI
+    updateUI(currentAccount);
+  }
+  inputLoanAmount.value = '';
+});
+
+/**
  * Money Transfer
  */
 btnTransfer.addEventListener('click', function (event) {
@@ -323,7 +354,7 @@ btnClose.addEventListener('click', function (event) {
  */
 
 // slice method does not change the original array
-// let arr = ['a', 'b', 'c', 'd', 'e'];
+let arr = ['a', 'b', 'c', 'd', 'e'];
 // console.log(arr.slice(2));
 // console.log(arr);
 // console.log(arr.slice(2, 4));
@@ -334,8 +365,8 @@ btnClose.addEventListener('click', function (event) {
 // console.log(arr.slice(-1));
 // // get the array starts from 1 and excepts the last two elements
 // console.log(arr.slice(1, -2));
-// // creates a shallow array
-// console.log(arr.slice());
+// creates a shallow array
+console.log(arr.slice());
 
 // // SPLICE method -- will mutuate the original array
 // console.log(arr.splice(2));
@@ -533,3 +564,80 @@ btnClose.addEventListener('click', function (event) {
 /**
  * findIndex Method
  */
+
+// /**
+//  * Some and every Method
+//  */
+// // Equality
+// console.log(movements);
+// console.log(movements.includes(-130));
+
+// // Condition
+// const anyDeposits = movements.some(mov => mov > 0);
+// console.log(anyDeposits);
+
+// // Every: Condition
+// console.log(movements.every(mov => mov > 0));
+// console.log(account4.movements.every(mov => mov > 0));
+
+// /**
+//  * flat and flatMap Method
+//  */
+
+// const arr = [[1, 2, 3], [4, 5, 6], 7, 8];
+// // Flat method only goes one level deep when flating an array
+// console.log(arr.flat());
+
+// const arrDeep = [[[1, 2], 3], [4, [5, 6]], 7, 8];
+// console.log(arrDeep.flat(2));
+
+// const accountMovements = accounts.map(acc => acc.movements);
+// console.log(accountMovements);
+// const allMovements = accountMovements.flat();
+// console.log(allMovements);
+
+// const overalBalance = allMovements.reduce((acc, mov) => acc + mov, 0);
+// console.log(overalBalance);
+
+// const overalBalance2 = accounts
+//   .map(account => account.movements)
+//   .flat()
+//   .reduce((acc, mov) => acc + mov, 0);
+// console.log(overalBalance2);
+
+// // flatMap -- combine map and flat method (only goes one level deep)
+// const overalBalance3 = accounts
+//   .flatMap(acc => acc.movements)
+//   .reduce((acc, mov) => acc + mov, 0);
+// console.log(overalBalance3);
+
+// /**
+//  * Sort Method
+//  */
+
+// // Strings
+// const owners = ['Jonas', 'Zach', 'Adam', 'Martha'];
+// console.log(owners);
+// // Mutate the original array
+// console.log(owners.sort());
+// console.log(owners);
+
+// // Numbers
+// console.log(movements);
+
+// // return < 0, then A, B (keep order)
+// // return > 0, then B, A (switch order)
+
+// // Asscending
+// movements.sort((a, b) => {
+//   if (a > b) return 1;
+//   if (b > a) return -1;
+// });
+// console.log(movements);
+
+// // Descending
+// movements.sort((a, b) => {
+//   if (a > b) return -1;
+//   if (b > a) return 1;
+// });
+// console.log(movements);
