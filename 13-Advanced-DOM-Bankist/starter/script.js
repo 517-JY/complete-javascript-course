@@ -627,3 +627,23 @@ h1.lastElementChild.style.color = 'white';
 //     el.style.transform = 'scale(0.8)';
 //   }
 // });
+
+/**
+ * Lifecycle Dom Event
+ */
+document.addEventListener('DOMContentLoaded', function (e) {
+  console.log('HTML parsed and DOM tree built', e);
+});
+
+window.addEventListener('load', function (e) {
+  console.log('Page fully loaded', e);
+});
+
+// // this event here is created immediately before a user is
+// // about to leave a page.
+// // So for example, after clicking this close button here in the browser tab,
+// window.addEventListener('beforeunload', function (e) {
+//   e.preventDefault();
+//   console.log(e);
+//   e.returnValue = '';
+// });
