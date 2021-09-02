@@ -11,43 +11,69 @@ const inputDuration = document.querySelector('.form__input--duration');
 const inputCadence = document.querySelector('.form__input--cadence');
 const inputElevation = document.querySelector('.form__input--elevation');
 
-// global variables
-let map;
-let mapEvent;
+class App {
+  // private class fields
+  #map;
+  #mapEvent;
 
-if (navigator.geolocation) {
-  navigator.geolocation.getCurrentPosition(
-    function (position) {
-      const { latitude } = position.coords;
-      const { longitude } = position.coords;
-      console.log(latitude, longitude);
-      console.log(`https://www.google.com/maps/@${latitude},${longitude}z`);
+  constructor() {
+    this._getPosition();
 
-      const coords = [latitude, longitude];
-      map = L.map('map').setView(coords, 15);
-      console.log(map);
+    form.addEventListener('submit', this._newWorkout.bind(this));
 
-      L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
-        attribution:
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      }).addTo(map);
+    // An event whenever we trigger the selected element
+    inputType.addEventListener('change', this._toggleElevationField);
+  }
 
-      // When a click on the map happens, we'd like to show the form
-      // handling clicks on map
-      map.on('click', function (mapE) {
-        mapEvent = mapE;
-        form.classList.remove('hidden');
-        // Cursor focuses
-        inputDistance.focus();
-      });
-    },
-    function () {
-      alert('Could not get your position');
+  _getPosition() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        this._loadMap.bind(this),
+        function () {
+          alert('Could not get your position');
+        }
+      );
     }
-  );
+  }
 
-  form.addEventListener('submit', function (e) {
+  _loadMap(position) {
+    const { latitude } = position.coords;
+    const { longitude } = position.coords;
+    console.log(latitude, longitude);
+    console.log(`https://www.google.com/maps/@${latitude},${longitude}z`);
+
+    const coords = [latitude, longitude];
+    this.#map = L.map('map').setView(coords, 15);
+    console.log(this.#map);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    }).addTo(this.#map);
+
+    // When a click on the map happens, we'd like to show the form
+    // handling clicks on map
+    this.#map.on('click', this._showForm.bind(this));
+  }
+
+  _showForm(mapE) {
+    this.#mapEvent = mapE;
+    form.classList.remove('hidden');
+    // Cursor focuses
+    inputDistance.focus();
+  }
+
+  _toggleElevationField() {
+    // Choosing closest parent
+    inputElevation.closest('.form__row').classList.toggle('form__row--hidden');
+    inputCadence.closest('.form__row').classList.toggle('form__row--hidden');
+  }
+
+  _newWorkout(e) {
     e.preventDefault();
+
+    // console.log('Inside newWorkOut function');
+    // console.log(this);
     // Clear input fields
     inputDistance.value =
       inputDuration.value =
@@ -57,12 +83,12 @@ if (navigator.geolocation) {
 
     // Display marker
     // mapEvent is an event created by leaflet
-    console.log(mapEvent);
-    const { lat, lng } = mapEvent.latlng;
+    // console.log(mapEvent);
+    const { lat, lng } = this.#mapEvent.latlng;
 
     // Leaflet Docs:
     L.marker([lat, lng])
-      .addTo(map)
+      .addTo(this.#map)
       .bindPopup(
         L.popup({
           maxWidth: 250,
@@ -74,12 +100,10 @@ if (navigator.geolocation) {
       )
       .setPopupContent('Workout')
       .openPopup();
-  });
-
-  // An event whenever we trigger the selected element
-  inputType.addEventListener('change', function () {
-    // Choosing closest parent
-    inputElevation.closest('.form__row').classList.toggle('form__row--hidden');
-    inputCadence.closest('.form__row').classList.toggle('form__row--hidden');
-  });
+  }
 }
+
+const app = new App();
+// app.getPosition() and so then this code here would get executed,
+// right at a point where the application loads
+// app._getPosition();
